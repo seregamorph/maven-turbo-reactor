@@ -71,7 +71,7 @@ class SignalingExecutorCompletionService {
         }
 
         static <T> Try<T> failure(Throwable e) {
-            return new Try<>() {
+            return new Try<T>() {
                 @Override
                 T get() throws ExecutionException {
                     throw new ExecutionException(e);
