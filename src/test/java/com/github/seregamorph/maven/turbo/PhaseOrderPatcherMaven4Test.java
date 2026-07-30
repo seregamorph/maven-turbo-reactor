@@ -3,8 +3,10 @@ package com.github.seregamorph.maven.turbo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.function.Function;
+import org.apache.maven.internal.impl.DefaultLifecycleRegistry;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -77,6 +79,18 @@ class PhaseOrderPatcherMaven4Test {
         "site-deploy",
         "after:site-deploy"
     );
+
+    @Test
+    public void shouldAllPhasesListedInTest() {
+        var defaultLifecycleRegistry = new DefaultLifecycleRegistry();
+        var allLifecyclePhases = new LinkedHashSet<String>();
+        for (var lifecycle : defaultLifecycleRegistry) {
+            var phases = defaultLifecycleRegistry.computePhases(lifecycle);
+            allLifecyclePhases.addAll(phases);
+        }
+
+        assertEquals(originalMaven4Phases, allLifecyclePhases.stream().toList());
+    }
 
     @Test
     public void shouldReorderMaven4PhasesNoTestJarSupported() {
