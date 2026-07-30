@@ -24,33 +24,34 @@ import org.junit.jupiter.api.Test;
 @SuppressWarnings("CodeBlock2Expr")
 class TurboMojosExecutionStrategyMaven3Test {
 
+    private static final List<String> MAVEN3_DEFAULT_LIFECYCLE_PHASES = List.of(
+        "validate",
+        "initialize",
+        "generate-sources",
+        "process-sources",
+        "generate-resources",
+        "process-resources",
+        "compile",
+        "process-classes",
+        "generate-test-sources",
+        "process-test-sources",
+        "generate-test-resources",
+        "process-test-resources",
+        "test-compile",
+        "process-test-classes",
+        "test",
+        "prepare-package",
+        "package",
+        "pre-integration-test",
+        "integration-test",
+        "post-integration-test",
+        "verify",
+        "install",
+        "deploy"
+    );
+
     @Test
     public void shouldReorderAndSignalFullPhasesNoTestJarSupported() throws LifecycleExecutionException {
-        List<String> phases = List.of(
-            "validate",
-            "initialize",
-            "generate-sources",
-            "process-sources",
-            "generate-resources",
-            "process-resources",
-            "compile",
-            "process-classes",
-            "generate-test-sources",
-            "process-test-sources",
-            "generate-test-resources",
-            "process-test-resources",
-            "test-compile",
-            "process-test-classes",
-            "test",
-            "prepare-package",
-            "package",
-            "pre-integration-test",
-            "integration-test",
-            "post-integration-test",
-            "verify",
-            "install",
-            "deploy"
-        );
         var expectedEvents = List.of(
             "exec:validate",
             "exec:initialize",
@@ -77,36 +78,11 @@ class TurboMojosExecutionStrategyMaven3Test {
             "exec:install",
             "exec:deploy"
         );
-        shouldReorderAndSignalImpl(false, phases, expectedEvents);
+        shouldReorderAndSignalImpl(false, MAVEN3_DEFAULT_LIFECYCLE_PHASES, expectedEvents);
     }
 
     @Test
     public void shouldReorderAndSignalFullPhasesTestJarSupported() throws LifecycleExecutionException {
-        List<String> phases = List.of(
-            "validate",
-            "initialize",
-            "generate-sources",
-            "process-sources",
-            "generate-resources",
-            "process-resources",
-            "compile",
-            "process-classes",
-            "generate-test-sources",
-            "process-test-sources",
-            "generate-test-resources",
-            "process-test-resources",
-            "test-compile",
-            "process-test-classes",
-            "test",
-            "prepare-package",
-            "package",
-            "pre-integration-test",
-            "integration-test",
-            "post-integration-test",
-            "verify",
-            "install",
-            "deploy"
-        );
         var expectedEvents = List.of(
             "exec:validate",
             "exec:initialize",
@@ -133,7 +109,7 @@ class TurboMojosExecutionStrategyMaven3Test {
             "exec:install",
             "exec:deploy"
         );
-        shouldReorderAndSignalImpl(true, phases, expectedEvents);
+        shouldReorderAndSignalImpl(true, MAVEN3_DEFAULT_LIFECYCLE_PHASES, expectedEvents);
     }
 
     @Test
