@@ -10,10 +10,12 @@ This extension suggests different Maven reactor scheduler implementation via cus
 By default, to build any module in a multi-module project Maven first resolves and executes all phases of upstream
 dependencies. This is a fundamental behaviour which is built-in and strongly enforced because of back compatibility.
 This significantly reduces possible concurrency and in a multi-core system CPU cores are loaded unevenly. To enhance
-parallelism this extension does two things:
+parallelism this extension does three things:
 * changes the order of `*test*` phases and `*package*`, `package` is executed before `test` (not after as default)
 * schedules module build of downstream dependencies when `package` phase was executed, not waiting for all phases (like
   `test`, `integration-test`, `install`, `deploy`, etc.)
+* prioritizes building modules with the maximum number of the downstream dependencies to reduce the chance of
+  unloaded worker threads
 
 As a result, depending on the particular project, this boosts the build and increases CPU utilization to maximum.
 
